@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
         \URL::forceScheme('https'); //https化
         $this->app['request']->server->set('HTTPS','on'); //pagination対応
         Schema::defaultStringLength(191); //カラムの最大長を指定した
+        Paginator::useBootstrap(); //動画
     }
+
 }
