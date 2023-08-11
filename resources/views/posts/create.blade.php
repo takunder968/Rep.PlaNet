@@ -8,7 +8,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     </head>
     <body>
-        <form action="/posts" method="POST">
+        <form action="/posts" method="POST" enctype="multipart/form-data">
             @csrf
            <div class="title">
                <h2>Title</h2>
@@ -17,10 +17,16 @@
            </div> 
            <div class="body">
                <h2>Body</h2>
-               <textarea name="post[body]" placeholder="今日も1日お疲れ様でした。">{{old('post.body')}}</textarea>
+               <textarea name="post[body]" placeholder="本文">{{old('post.body')}}</textarea>
                <p class="body__error" style="color:red">{{ $errors->first('post.body') }}</p>
            </div>
+           <!-- 画像アップロードで追加 -->
+           <div class="image">
+               <input type="file" name="image_path" multiple="multiple">
+           </div>
+           <!-- ここまで -->
            <input type ="submit" value="store"/>
+          
         </form>
         <div class="footer">
             <a href="/">戻る</a>

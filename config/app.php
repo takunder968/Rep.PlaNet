@@ -181,7 +181,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        // CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class, //画像アップロードのため追加
         /*
          * Package Service Providers...
          */

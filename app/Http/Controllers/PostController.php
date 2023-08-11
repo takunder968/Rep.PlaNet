@@ -5,33 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
-
+use App\Models\Image;
 
 class PostController extends Controller
 {
     public function index(Post $post)
     {
-        // クライアントインスタンス生成
-        $client = new \GuzzleHttp\Client();
-
-        // GET通信するURL
-        $url = 'https://teratail.com/api/v1/questions';
-
-        // リクエスト送信と返却データの取得
-        // Bearerトークンにアクセストークンを指定して認証を行う
-        $response = $client->request(
-            'GET',
-            $url,
-            ['Bearer' => config('services.teratail.token')]
-        );
-        
-        // API通信で取得したデータはjson形式なので
-        // PHPファイルに対応した連想配列にデコードする
-        $questions = json_decode($response->getBody(), true);
-        return view('posts.index')->with([
-            'posts' => $post->getPaginateByLimit(3),
-            'questions' => $questions['questions'],
-        ]);
+       return view('posts/index')->with(['posts' => $post->getPaginateByLimit()]); 
     }
 
     public function show(Post $post)
@@ -44,6 +24,16 @@ class PostController extends Controller
     {
         $input = $request['post'];
         $post->fill($input)->save();
+        
+        if($request->file('images')){
+            foreach($request->images as $url){
+                $image = new Image();
+                $image_url = Cloudinary::upload($url->getRealPath())->getSecurePath();
+                $image->image_url = $image_url;
+                $image->post_id = $post->id;
+                $image->save();
+            }
+        }
         return redirect('/posts/' . $post->id);
     }
     
