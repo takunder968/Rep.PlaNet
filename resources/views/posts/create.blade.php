@@ -22,7 +22,7 @@
            </div>
            <!-- 画像アップロードで追加 -->
            <div class="image">
-               <input type="file" name="image_path" multiple="multiple">
+               <input type="file" name="image" multiple="multiple">
            </div>
            <!-- ここまで -->
            <input type ="submit" value="store"/>

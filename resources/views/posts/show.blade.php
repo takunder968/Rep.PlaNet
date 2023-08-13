@@ -16,9 +16,14 @@
                 <h3>本文</h3>
                 <p>{{ $post->body }}</p>    
             </div>
-            @foreach($post->images as $image)
-        <img src="{{ $image->image_path }}" />
-            @endforeach
+        <!-- ここから追加 -->
+            <div>
+                @foreach($images as $image)
+                    <img src="{{ $image->image_path }}" alt="画像が読み込めません。"/>
+                @endforeach
+            </div>
+        
+            <!-- ここまで追加 -->
         </div>
         <div class="edit">
             <a href="/posts/{{ $post->id }}/edit">edit</a>
