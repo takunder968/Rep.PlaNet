@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\Image;
+use Cloudinary;
 
 class PostController extends Controller
 {
@@ -14,26 +15,22 @@ class PostController extends Controller
        return view('posts/index')->with(['posts' => $post->getPaginateByLimit()]); 
     }
 
-    public function show(Post $post)
+    public function show(Post $post )
     {
-        return view('posts.show')->with(['post' => $post]);
+        return view('/posts/show')->with(['post' => $post, 'images' => $post->images()->get()]);
     }
     
     
-    public function store(PostRequest $request, Post $post)
+    public function store(PostRequest $request, Post $post, Image $image)
     {
+         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入している
         $input = $request['post'];
+        $image_url = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+        //$input += ['image_path' => $image_url];  //追加
         $post->fill($input)->save();
-        
-        if($request->file('images')){
-            foreach($request->images as $url){
-                $image = new Image();
-                $image_url = Cloudinary::upload($url->getRealPath())->getSecurePath();
-                $image->image_url = $image_url;
-                $image->post_id = $post->id;
-                $image->save();
-            }
-        }
+        $image->image_path = $image_url;
+        $image->post_id = $post->id;
+        $image->save();
         return redirect('/posts/' . $post->id);
     }
     
