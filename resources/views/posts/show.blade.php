@@ -22,7 +22,6 @@
                     <img src="{{ $image->image_path }}" alt="画像が読み込めません。"/>
                 @endforeach
             </div>
-        
             <!-- ここまで追加 -->
         </div>
         <div class="edit">

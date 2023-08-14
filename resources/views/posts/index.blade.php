@@ -14,7 +14,7 @@
     </script>
     
     <body>
-        <h1>Blog Name</h1>
+        <h1>PlaNet</h1>
         <a class = 'sosobig' href='/posts/create'>create</a>
         <div class='posts'>
             @foreach ($posts as $post)

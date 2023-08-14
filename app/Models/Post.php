@@ -14,6 +14,7 @@ class Post extends Model
    protected $fillable = [
         'title',
         'body' ,
+        'user_id'
 
         ];
     
@@ -25,6 +26,14 @@ class Post extends Model
     public function images()
     {
         return $this->hasMany(Image::class);
+    }
+    
+    // Userに対するリレーション
+
+    //「1対多」の関係なので単数系に
+    public function user()
+    {
+    return $this->belongsTo(User::class);
     }
     
 }
