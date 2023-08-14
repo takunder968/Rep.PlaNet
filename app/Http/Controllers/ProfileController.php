@@ -17,6 +17,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        //$this->authorize('update', $request => user);//編集権限
         return view('profile.edit', [
             'user' => $request->user(),
         ]);
@@ -27,7 +28,6 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        
         $user = Auth::user();
         $user->name = $request->name;
         $user->age = $request->age;
@@ -47,6 +47,7 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        //$this->authorize('delete', $request => user);//削除権限
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current-password'],
         ]);

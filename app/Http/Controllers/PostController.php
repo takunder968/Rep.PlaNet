@@ -41,11 +41,14 @@ class PostController extends Controller
     
     public function edit(Post $post)
     {
+     
         return view('posts/edit')->with(['post' => $post]);
+        
     }
     
     public function update(PostRequest $request, Post $post)
     {
+        $this->authorize('delete', $post);
         $input_post  = $request['post'];
         $post->fill($input_post)->save();
         return redirect('/posts/' . $post->id);
@@ -53,7 +56,17 @@ class PostController extends Controller
     
     public function delete(Post $post)
     {
+        $this->authorize('delete', $post);
         $post->delete();
         return redirect('/');
+    }
+    
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            abort_if($request->user()->isNot($request->route('post')->user), 403);
+            
+            return $next($request);
+        })->only(['update', 'delete']);
     }
 }

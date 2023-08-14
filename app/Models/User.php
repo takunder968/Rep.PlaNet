@@ -42,4 +42,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    // Postに対するリレーション
+
+    //「1対多」の関係なので'posts'と複数形に
+    public function posts()   
+    {
+    return $this->hasMany(Post::class);  
+    }
+    
+    /**
+     * 現在のユーザー、または引数で渡されたIDが管理者かどうかを返す
+     *
+     * @param  number  $id  User ID
+     * @return boolean
+     */
+    public function isAdmin($id = null) {
+        $id = ($id) ? $id : $this->id;
+        return $id == config('admin_id');
+    }
 }
